@@ -11,7 +11,7 @@ class Part:
         self.file_path = file_path
         self.excel_path = excel_path
         self.errno_list = []
-        df = pd.read_excel(excel_path, sheet_name='Sheet1', engine='xlrd')
+        df = pd.read_excel(excel_path, sheet_name='Sheet1', engine='openpyxl')
         self.subfolder_names = df['文件级档号'].dropna().unique()
         self.root_names = df['案卷级档号'].dropna().unique()
         self.page_counts = df['张页号'].dropna().to_numpy()
