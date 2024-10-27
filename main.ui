@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
-    <height>245</height>
+    <width>594</width>
+    <height>421</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,30 +23,17 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>分卷小程序</string>
+   <string>分件小程序</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,4">
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,4">
    <property name="rightMargin">
     <number>20</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QTextBrowser" name="file_choose_text"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item>
       <widget class="QPushButton" name="file_choose_button">
        <property name="enabled">
@@ -76,6 +63,12 @@
          <height>100</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { 
+	font-family:微软雅黑;
+    font-size:14px;
+}</string>
+       </property>
        <property name="text">
         <string>选择文件</string>
        </property>
@@ -84,26 +77,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLineEdit" name="file_choose_line"/>
+     </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QTextBrowser" name="excel_choose_text"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item>
       <widget class="QPushButton" name="excel_choose_button">
        <property name="minimumSize">
@@ -112,38 +92,24 @@
          <height>30</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { 
+    font-family:微软雅黑;
+    font-size:14px;
+}</string>
+       </property>
        <property name="text">
-        <string>选择卷内目录</string>
+        <string>选择目录</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="excel_choose_line"/>
      </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPlainTextEdit" name="errno_return_text">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item>
       <widget class="QPushButton" name="start_button">
        <property name="minimumSize">
@@ -152,10 +118,19 @@
          <height>30</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { 
+    font-family:微软雅黑;
+    font-size:14px;
+}</string>
+       </property>
        <property name="text">
         <string>开始执行</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QListView" name="error_listView"/>
      </item>
     </layout>
    </item>
