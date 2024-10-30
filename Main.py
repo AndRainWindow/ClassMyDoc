@@ -2,26 +2,26 @@ import os.path,sys
 from PySide6.QtWidgets import *
 from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import QStringListModel,Qt
-from fileControl import FileProcessingThread
+from fileControl import FileMoveProcessingThread,PDFMoveProcessingThread
 from main_ui import Ui_ClassForm
 
 class Main(QWidget):
 
     def __init__(self,parent = None):
-        # 再加载界面
         super().__init__(parent)
         self.ui = Ui_ClassForm()
         self.ui.setupUi(self)
-        self.ui.file_choose_button.clicked.connect(self.file_choose)
-        self.ui.excel_choose_button.clicked.connect(self.excel_choose)
-        self.ui.start_button.clicked.connect(self.start_task)
-        # self.ui.start_button.setEnabled(False)
-        self.error_model = QStringListModel()
-        self.ui.error_listView.setModel(self.error_model)
-        self.error_model.setStringList([])
-        self.ui.pushButton.clicked.connect(self.stop_processing)
 
-        self.ui.progressBar.setMinimum(0)
+        self.ui.file_choose_button.clicked.connect(self.file_choose)    # 选择文件按钮
+        self.ui.excel_choose_button.clicked.connect(self.excel_choose)  # 选择excel路径
+        self.ui.start_button.clicked.connect(self.start_task_file)           # 开启任务线程
+
+        self.error_model = QStringListModel()
+        self.ui.error_listView.setModel(self.error_model)               # 设置列表模型
+        self.error_model.setStringList([])
+        #self.ui.pushButton_stop.clicked.connect(self.start_task_pdf)        # 按钮绑定停止处理任务
+
+        self.ui.progressBar.setMinimum(0)                               # 设置进度条样式
         self.ui.progressBar.setMaximum(100)
         self.ui.progressBar.setStyleSheet('''
             QProgressBar {
@@ -39,12 +39,11 @@ class Main(QWidget):
             }
         ''')
 
-        self.ui.verticalLayout.addWidget(self.ui.progressBar)
 
         self.file_path = ""
         self.excel_path = ""
 
-        self.task_thread = None
+        self.task_thread1 = None                                         # 初始化线程
 
     def file_choose(self):
         self.file_path = QFileDialog.getExistingDirectory(self, '选择文件夹')
@@ -53,9 +52,6 @@ class Main(QWidget):
         if not self.file_path:
             self.ui.file_choose_line.clear()
             self.ui.file_choose_line.setText("未成功选择文件夹路径，请重新选择。")
-        # if self.file_path and self.excel_path:
-        #     self.ui.start_button.setEnabled(True)
-        # return
 
     def excel_choose(self):
         self.excel_path, _  = QFileDialog.getOpenFileName(
@@ -69,31 +65,36 @@ class Main(QWidget):
         if not self.excel_path:
             self.ui.excel_choose_line.clear()
             self.ui.excel_choose_line.setText("未成功选择卷内目录路径，请重新选择。")
-        # if self.file_path and self.excel_path:
-        #     self.ui.start_button.setEnabled(True)
-        # return
-
-    def start_task(self):
+    def start_task_pdf(self):
         if self.file_path != "" and self.excel_path != "":
-            self.task_thread = FileProcessingThread(fileDir=self.file_path,excelDir=self.excel_path)
-            self.task_thread.progress.connect(self.update_progress)
-            self.task_thread.error_signal.connect(self.handle_error)
-            self.task_thread.result_signal.connect(self.handle_results)
-            self.task_thread.start()
-            # self.error_model.setStringList(["此组数据处理完成!"])
-            
+            self.task_thread2 = PDFMoveProcessingThread(self,fileDir=self.file_path,excelDir=self.excel_path)
+            self.task_thread2.progress.connect(self.update_progress)                     # 更新进度条信号
+            self.task_thread2.error_signal.connect(self.handle_error)                    # 异常处理信号
+            self.task_thread2.result_signal.connect(self.handle_results)                 # 处理完成信号
+            self.task_thread2.start()                                                    # 启动线程
+    def start_task_file(self):
+        if self.file_path != "" and self.excel_path != "":
+            self.task_thread1 = FileMoveProcessingThread(self,fileDir=self.file_path,excelDir=self.excel_path)
+            self.task_thread1.progress.connect(self.update_progress)                     # 更新进度条信号
+            self.task_thread1.error_signal.connect(self.handle_error)                    # 异常处理信号
+            self.task_thread1.result_signal.connect(self.handle_results)                 # 处理完成信号
+            self.task_thread1.start()# 启动线程
+            self.task_thread1.result_signal.connect(self.start_task_pdf)
+
+
     def update_progress(self, value):
         # 更新进度条和标签
         self.ui.progressBar.setValue(value)
        
     def stop_processing(self):
-        if self.task_thread and self.task_thread.isRunning():
-            self.task_thread.stop()  # 调用线程的 stop 方法停止线程
+        i = self.task_thread1.isRunning()
+        if self.task_thread1 is not None and self.task_thread1.isRunning():
+            self.task_thread1.requestInterruption()  # 调用线程的 stop 方法停止线程
+            self.ui.progressBar.setValue(0)
 
     def handle_error(self, error_message):
         # 显示错误信息并停止线程
-        # self.progress_label.setText(f"错误：{error_message}")
-        if self.task_thread:
+        if self.task_thread1:
             self.stop_processing()  # 确保线程在错误时停止
             with open(os.path.join(self.file_path, '错误信息.log'), 'w') as f:
                 for i, errno_text in enumerate(error_message, start=1):
@@ -101,8 +102,8 @@ class Main(QWidget):
                     self.error_model.insertRows(self.error_model.rowCount(), 1)
                     index = self.error_model.index(self.error_model.rowCount() - 1)
                     self.error_model.setData(index, errno_text)
-            self.task_thread = None
-            QMessageBox.information(self.ui, '提示', f'共发现{len(error_message)}条错误！请进一步查看本路径下的错误日志来查看错误信息。')
+            self.task_thread1 = None
+            QMessageBox.information(self, '提示', f'共发现{len(error_message)}条错误！请进一步查看本路径下的错误日志来查看错误信息。')
     
     def handle_results(self, results):
     # 处理任务完成后返回的结果
@@ -114,10 +115,10 @@ class Main(QWidget):
                     index = self.error_model.index(self.error_model.rowCount() - 1)
                     self.error_model.setData(index, errno_text)
 
-            QMessageBox.information(self.ui, '提示', f'共发现{len(results)}条错误！请进一步查看本路径下的错误日志来查看错误信息。')
+            QMessageBox.information(self, '提示', f'共发现{len(results)}条错误！请进一步查看本路径下的错误日志来查看错误信息。')
         else:
             self.error_model.setStringList(["此组数据处理完成!"])
-        self.task_thread = None  # 清除线程引用
+        self.task_thread1 = None  # 清除线程引用
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main.ui'
+## Form generated from reading UI file 'mainwvyUvE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.0
 ##
@@ -9,15 +9,15 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLineEdit, QListView,
-    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+                               QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
+                               QVBoxLayout, QWidget)
 
 class Ui_ClassForm(object):
     def setupUi(self, ClassForm):
@@ -48,9 +48,9 @@ class Ui_ClassForm(object):
         self.file_choose_button.setMaximumSize(QSize(16777215, 23))
         self.file_choose_button.setSizeIncrement(QSize(0, 100))
         self.file_choose_button.setStyleSheet(u"QPushButton { \n"
-"	font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
-"    font-size:14px;\n"
-"}")
+                                              "	font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
+                                              "    font-size:14px;\n"
+                                              "}")
         self.file_choose_button.setAutoDefault(False)
 
         self.horizontalLayout.addWidget(self.file_choose_button)
@@ -69,9 +69,9 @@ class Ui_ClassForm(object):
         self.excel_choose_button.setObjectName(u"excel_choose_button")
         self.excel_choose_button.setMinimumSize(QSize(0, 30))
         self.excel_choose_button.setStyleSheet(u"QPushButton { \n"
-"    font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
-"    font-size:14px;\n"
-"}")
+                                               "    font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
+                                               "    font-size:14px;\n"
+                                               "}")
 
         self.horizontalLayout_2.addWidget(self.excel_choose_button)
 
@@ -95,21 +95,11 @@ class Ui_ClassForm(object):
         self.start_button.setObjectName(u"start_button")
         self.start_button.setMinimumSize(QSize(0, 30))
         self.start_button.setStyleSheet(u"QPushButton { \n"
-"    font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
-"    font-size:14px;\n"
-"}")
+                                        "    font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
+                                        "    font-size:14px;\n"
+                                        "}")
 
         self.verticalLayout_4.addWidget(self.start_button)
-
-        self.pushButton = QPushButton(ClassForm)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(0, 30))
-        self.pushButton.setStyleSheet(u"QPushButton { \n"
-"    font-family:\u5fae\u8f6f\u96c5\u9ed1;\n"
-"    font-size:14px;\n"
-"}")
-
-        self.verticalLayout_4.addWidget(self.pushButton)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -145,6 +135,5 @@ class Ui_ClassForm(object):
         self.file_choose_button.setText(QCoreApplication.translate("ClassForm", u"\u9009\u62e9\u6587\u4ef6", None))
         self.excel_choose_button.setText(QCoreApplication.translate("ClassForm", u"\u9009\u62e9\u76ee\u5f55", None))
         self.start_button.setText(QCoreApplication.translate("ClassForm", u"\u5f00\u59cb\u6267\u884c", None))
-        self.pushButton.setText(QCoreApplication.translate("ClassForm", u"\u505c\u6b62\u8fd0\u884c", None))
     # retranslateUi
 
